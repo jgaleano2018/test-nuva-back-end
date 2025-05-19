@@ -14,6 +14,7 @@ class Task(BaseModel):
 
     def dict(self) -> dict:
         return {
+            "id": self.id,
             "name": str(self.name),
             "description": str(self.description),
             "title": str(self.title),
