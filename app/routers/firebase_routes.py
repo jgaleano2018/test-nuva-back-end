@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.post("/tasks")
 async def firebase_create_task(task: Task):
-    response = firebase.database().child("tasks").push(task.dict())
+    response = firebase.database().child("Task").push(task.dict())
 
     if response is not None:
         return Response(status="Ok",
@@ -20,7 +20,7 @@ async def firebase_create_task(task: Task):
 
 @router.get("/tasks")
 async def firebase_get_tasks():
-    response = firebase.database().child("tasks").get()
+    response = firebase.database().child("Task").get()
     tasks = []
     if response.each() is not None:
         for result in response.each():  # type:ignore
@@ -33,7 +33,7 @@ async def firebase_get_tasks():
 @router.get("/tasks/{taskId}")
 async def firebase_get_task(taskId: str):
     response = firebase.database().child(
-        "tasks").order_by_key().equal_to(taskId).get()
+        "Task").order_by_key().equal_to(taskId).get()
     task = None
     if response.each() is not None:
         for result in response.each():  # type:ignore
@@ -51,7 +51,7 @@ async def firebase_get_task(taskId: str):
 
 @router.put("/tasks/{taskId}")
 async def firebase_update_task(taskId: str, task: Task):
-    response = firebase.database().child("tasks").child(taskId).update(task.dict())
+    response = firebase.database().child("Task").child(taskId).update(task.dict())
     if response is not None:
         return Response(status="Ok",
                         code="200",
@@ -64,7 +64,7 @@ async def firebase_update_task(taskId: str, task: Task):
 
 @router.delete("/tasks/{taskId}")
 async def firebase_delete_task(taskId: str):
-    response = firebase.database().child("tasks").child(taskId).remove()
+    response = firebase.database().child("Task").child(taskId).remove()
     return Response(status="Ok",
                     code="200",
                     message="Successfully delete task", result=response).dict(exclude_none=False)

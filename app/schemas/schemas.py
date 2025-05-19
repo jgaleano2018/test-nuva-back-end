@@ -7,15 +7,17 @@ T = TypeVar('T')
 
 class Task(BaseModel):
     id: Optional[int] = None
+    name: str
     title: str
     description: Optional[str] = None
     status: str
 
     def dict(self) -> dict:
         return {
+            "name": str(self.name),
+            "description": str(self.description),
             "title": str(self.title),
-            "description": self.description,
-            "status": self.completed,
+            "status": str(self.status),
         }
 
     class Config:
